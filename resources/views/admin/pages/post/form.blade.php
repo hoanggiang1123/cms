@@ -1,7 +1,7 @@
 @php
 use App\Helper\Template;
-    $categories = Template::setActiveCategory($categories,$item['category']);
-    $tags = Template::setActiveTag($item['tag']);
+    $categories   = Template::setActiveCategory($categories,$item['category_id']);
+    $tags = Template::setActiveTag($item['tags']);
     $task = Template::setTask($task);
     $controllerVar = Template::setControllerVar($controllerName);
 @endphp
@@ -15,7 +15,7 @@ use App\Helper\Template;
                 <div class="col-8">
                     <div class="form-group row">
                         <div class="col-sm-12 input-floating-label text-blue-d1 brc-blue-m1">
-                            <input type="text" value="{{ $item['title']? $item['title']: old('title') }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="title">
+                            <input type="text" value="{{ $item['name']? $item['name']: old('name') }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="name">
                             <span class="floating-label text-grey-m3">Title</span>
                         </div>
                     </div>
@@ -107,19 +107,7 @@ use App\Helper\Template;
                         </div>
                         <div class="card-body show bg-white px-2 ace-scroll ace-scroll-wrap" ace-scroll="{'height': 250,'smooth':true}" style="max-height: 250px;">
                             <div class="pl-2">
-                                @forelse($categories as $cat)
-                                
-                                <div>
-                                    <label>
-                                        <input type="checkbox" name="category_name[]" value="{{ $cat['id'] }},{{ $cat['title'] }}" {{ (isset($cat['active']) && $cat['active'] == 'yes')? 'checked': '' }}>
-                                        {{ $cat['title'] }}
-                                    </label>
-                                </div>
-                                @empty
-                                    <div>
-                                        <label for="empty-cat">Pls Create Category</label>
-                                    </div>
-                                @endforelse
+                                {!! $categories !!}
                             </div>
                         </div>
                     </div>

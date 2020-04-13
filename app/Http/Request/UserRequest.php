@@ -68,7 +68,7 @@ class UserRequest extends FormRequest
         return [
             'username' => $condUserName,
             'email'    => $condEmail,
-            'title' => $condFullname,
+            'name' => $condFullname,
             'status'   => $condStatus,
             'current_password' => $condCurrentPass,
             'password' => $condPass,

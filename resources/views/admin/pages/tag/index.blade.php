@@ -35,13 +35,13 @@
                     @csrf
                     <table id="simple-table" class="table table-bordered table-bordered-x table-hover text-dark-m2">
                         <thead class="text-dark-m3 bgc-grey-l4">
-                            @include('admin.templates.tblhead', ['fields' => ['ID','Title','Thumb','Status','Is Home','Display','Ordering','Action']])
+                            @include('admin.templates.tblhead', ['fields' => ['ID','Name','Thumb','Status','Is Home','Display','Ordering','Action']])
                         </thead>
                                                 
                         <tbody>
                             @forelse($items as $key => $value)
                                 @php
-                                    $thumb = Template::showImage($controllerName, $value['thumb'], $value['title']);
+                                    $thumb = Template::showImage($controllerName, $value['thumb'], $value['name']);
                                     $status = Template::showStatus($controllerName,$value['status'],$value['id']);
                                     $action = Template::showAction($controllerName,$value['id']);
                                     $ishome = Template::showIsHome($controllerName,$value['ishome'],$value['id']);
@@ -52,11 +52,11 @@
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-info-m1 v-hover"></div>
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-success-m1 v-active"></div>
                                     <label>
-                                        <input type="checkbox" name="cball[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
+                                        <input type="checkbox" name="id[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
                                     </label>
                                 </td>
                                 <td class="text-center pr-0">{{ $value['id'] }}</td>
-                                <td><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['title'] }} </a></td>
+                                <td><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['name'] }} </a></td>
                                 <td>{!! $thumb !!}</td>
                                 <td class="d-none d-sm-table-cell">{!! $status !!}</td>
                                 <td>{!!  $ishome !!}</td>
@@ -73,7 +73,7 @@
                         </tbody>
 
                         <tfoot class="text-dark-m3 bgc-grey-l4">
-                            @include('admin.templates.tblhead', ['fields' => ['ID','Title','Thumb','Status','Is Home','Display','Ordering','Action']])
+                            @include('admin.templates.tblhead', ['fields' => ['ID','Name','Thumb','Status','Is Home','Display','Ordering','Action']])
                         </tfoot>
                     </table>
                 </form>

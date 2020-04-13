@@ -35,7 +35,7 @@
                             
                             <div class="form-group row">
                                 <div class="col-sm-12 input-floating-label text-blue-d1 brc-blue-m1">
-                                    <input type="text" value="{{ $item['title'] }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="title">
+                                    <input type="text" value="{{ $item['name'] }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="name">
                                     <span class="floating-label text-grey-m3">Full Name</span>
                                 </div>
                             </div>

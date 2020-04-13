@@ -18,16 +18,30 @@ class Template {
         if(count($taxonomies) > 0) {
             //route($taxonomyController.'/'.$tax['id'])
             foreach($taxonomies as $tax) {
-                $htmlArr[] = sprintf('<a href="%s" >%s</a>', '#',$tax['title']);
+                $htmlArr[] = sprintf('<a href="%s" >%s</a>', '#',$tax['name']);
             }
             $html = implode(',',$htmlArr);
         } else {
-            $html = '<a href="javascript:;">None</a>';
+            $html = '<a href="javascript:;">No Tag Found</a>';
         }
 
         return $html;
     }
 
+    public static function showCategory($categoryController, $taxonomies)
+    {
+        $html = '';
+        $htmlArr = [];
+
+        if($taxonomies) {
+            $html = sprintf('<a href="%s" >%s</a>', '#',$taxonomies['name']);
+        } else {
+            $html = '<a href="javascript:;">Uncategorized</a>';
+        }
+
+        return $html;
+    }
+    
     public static function showStatus($controllerName,$status,$id) {
         $link = route($controllerName.'/status',['status' => $status,'id'=>$id]);
 
@@ -200,14 +214,18 @@ class Template {
         return $html;
     }
 
-    public static function showTermsFilter($terms,$params,$termName) {
+    public static function showTermsFilter($terms,$params,$termName) 
+    {
         $termNameArr = explode('_', $termName);
         $name = ucfirst($termNameArr[1]);
+
         $html = '<select data-field="'.$termName.'" id="'.$termName.'" class="form-control ml-2">
                     <option value="0"> View All '.$name.' </option>';
-        foreach($terms as $term) {
+
+        foreach($terms as $term) 
+        {
             $selected = ($term['id'] == $params[$termNameArr[0]][$termNameArr[1]])? 'selected' : '';
-            $html.= '<option value="'.$term['id'].'" '.$selected.'> '.$term['title'].' </option>';
+            $html.= '<option value="'.$term['id'].'" '.$selected.'> '.$term['name'].' </option>';
         }
                   
         $html.='</select>';
@@ -220,7 +238,7 @@ class Template {
         $template = Config::get('hgcms.template.'.$homeDisplayArr[1]);
        
         $html = '<select data-field="'.$homeDisplayArr[1].'" id="'.$type.'" class="form-control ml-2">
-        <option value="0"> View All '.$homeDisplayArr[1].' </option>';
+        <option value="all"> View All '.$homeDisplayArr[1].' </option>';
 
         foreach($template as $key => $value) {
             $selected = ($key == $params[$homeDisplayArr[0]][$homeDisplayArr[1]])? 'selected' : '';
@@ -252,36 +270,39 @@ class Template {
         return $html;
     }
 
-    public static function setActiveCategory($categories,$postCategory) {
+    public static function setActiveCategory($categories,$current_cat_id) {
+        $html= '';
 
-        if($postCategory !== null && $postCategory !== '') {
-
-            $cats = json_decode($postCategory,true);
-
-            if(count($categories) > 0) {
-
-                foreach($categories as $key => $cat) {
-
-                    foreach($cats as $ca) {
-                        if($ca['id'] == $cat['id']) {
-                            $categories[$key]['active'] = 'yes';
-                        }
-                    }
-                }
+        if($categories)
+        {
+            foreach($categories as $key => $category) 
+            {
+                $selected = $category['id'] == $current_cat_id ? 'checked': '';
+                $html.= sprintf('<div>
+                            <label>
+                                <input type="radio" name="category_id" value="%s" %s>
+                                    %s
+                            </label>
+                        </div>', $category['id'],$selected,$category['name']);
             }
-        }
 
-        return $categories;
+        } else {
+            $html = '<div>
+                        <label for="empty-cat">Pls Create Category</label>
+                    </div>';
+        }
+        
+        return $html;
     }
 
     public static function setActiveTag($tags) {
-
-        if($tags !== null && $tags !== '') {
-            $tags = json_decode($tags,true);
+        if($tags) 
+        {
             $tagArr = [];
 
-            foreach($tags as $tag) {
-                $tagArr[] = "'".$tag['title']."'";
+            foreach($tags as $tag) 
+            {
+                $tagArr[] = "'".$tag['name']."'";
             }
 
             $tagStr = '['.implode(',',$tagArr).']';
@@ -309,8 +330,8 @@ class Template {
             $html.= '<select name="level" class="form-control">';
 
             foreach($roles as $r) {
-                $selected = $r['title'] == $currentRole ? 'selected' : '';
-                $html.= '<option value="'. $r['id'] .'"  '. $selected .' >'. $r['title'].'</option>';
+                $selected = $r['name'] == $currentRole ? 'selected' : '';
+                $html.= '<option value="'. $r['id'] .'"  '. $selected .' >'. $r['name'].'</option>';
             }
             $html.= '</select>';
         }

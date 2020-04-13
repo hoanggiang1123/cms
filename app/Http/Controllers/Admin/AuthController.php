@@ -1,9 +1,17 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
-use App\Models\User as MainModel;
-use App\Http\Request\AuthLoginRequest as MainRequest;
+
 use Illuminate\Http\Request;
+
+use App\Http\Request\AuthLoginRequest as MainRequest;
+
+use App\Http\Controllers\Controller;
+
+use App\Models\User as MainModel;
+use App\Models\Permision;
+
+
 
 class AuthController extends Controller {
     private $controllerName = 'auth';
@@ -27,7 +35,11 @@ class AuthController extends Controller {
             $params = $request->only('username','password');
 
             $res = $this->model->getItems($params, ['task' => 'auth-login']);
-            
+
+            $permisionModel = new Permision();
+            $permision = $permisionModel->listItems($res->permision,['task' => 'admin-list-items-with-permision']);
+            $res['permision-name'] = $permision;
+
             if(!$res) return redirect()->route($this->controllerName.'/login')->withErrors('Acc or Pass not Correct');
 
             $request->session()->put('userInfo',$res);
@@ -38,7 +50,7 @@ class AuthController extends Controller {
     public function logout(Request $request)
     {
         if($request->session()->has('userInfo')) $request->session()->pull('userInfo');
-        return redirect()->route('dashboard');
+        return redirect()->route($this->controllerName.'/login');
     }
 
 }

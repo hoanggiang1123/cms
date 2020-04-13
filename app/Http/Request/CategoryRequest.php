@@ -2,25 +2,20 @@
 namespace App\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest {
-    private $table = 'hgcms_post';
+class CategoryRequest extends FormRequest {
+    private $table = 'hgcms_categories';
 
     public function authoirize() {
         return true;
     }
     public function rules() {
         $id = $this->id;
-        $slug = "bail|required|unique:$this->table,slug";
-        if(!empty($id))
-        {
-            $slug .= ",$id";
-        }
-
+        
         return [
             'name' => 'bail|required|min:5',
-            'slug' => $slug,
-            'content' =>'bail|required|min:5',
+            'slug' => "bail|required|unique:$this->table,slug,$id",
             'status' => 'bail|in:active,inactive',
+            'ishome' => 'bail|in:yes,no',
         ];
     }
 }

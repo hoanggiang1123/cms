@@ -19,7 +19,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin'], function() {
 
     $prefix = 'post';
     $controllerName = 'post';
-    Route::group(['prefix' => $prefix], function () use ($controllerName) {
+    Route::group(['prefix' => $prefix, 'middleware' => ['permission.admin','check.permision']], function () use ($controllerName) {
         $controller = ucfirst($controllerName).'Controller@';
         Route::get('/', ['as' => $controllerName, 'uses' => $controller.'index']);
         Route::post('change-status-multi/{status}', ['as' => $controllerName.'/statuses', 'uses' => $controller.'statuses']);
@@ -47,7 +47,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin'], function() {
 
     $prefix = 'category';
     $controllerName = 'category';
-    Route::group(['prefix' => $prefix], function () use ($controllerName) {
+    Route::group(['prefix' => $prefix, 'middleware' => ['permission.admin','check.permision']], function () use ($controllerName) {
         $controller = ucfirst($controllerName).'Controller@';
         Route::get('/', ['as' => $controllerName, 'uses' => $controller.'index']);
         Route::get('form/{id?}', ['as' => $controllerName.'/form', 'uses' => $controller.'form']);
@@ -67,7 +67,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin'], function() {
 
     $prefix = 'tag';
     $controllerName = 'tag';
-    Route::group(['prefix' => $prefix], function () use ($controllerName) {
+    Route::group(['prefix' => $prefix, 'middleware' => ['permission.admin','check.permision']], function () use ($controllerName) {
         $controller = ucfirst($controllerName).'Controller@';
         Route::get('/', ['as' => $controllerName, 'uses' => $controller.'index']);
         Route::get('form/{id?}', ['as' => $controllerName.'/form', 'uses' => $controller.'form']);
@@ -87,7 +87,7 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin'], function() {
 
     $prefix = 'user';
     $controllerName = 'user';
-    Route::group(['prefix' => $prefix], function () use ($controllerName) {
+    Route::group(['prefix' => $prefix, 'middleware' => ['permission.admin','check.permision']], function () use ($controllerName) {
         $controller = ucfirst($controllerName).'Controller@';
         Route::get('/', ['as' => $controllerName, 'uses' => $controller.'index']);
         Route::get('form/{id?}', ['as' => $controllerName.'/form', 'uses' => $controller.'form']);
@@ -130,3 +130,4 @@ Route::group(['prefix' => $prefixAdmin, 'namespace' => 'Admin'], function() {
         Route::get('/logout', ['as' => $controllerName. '/logout', 'uses' => $controller.'logout']);
     });
 });
+

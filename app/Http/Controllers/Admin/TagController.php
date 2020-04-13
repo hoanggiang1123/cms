@@ -1,30 +1,32 @@
 <?php
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Term as MainModel;
-use App\Http\Request\TermRequest as MainRequest;
 
-class TagController extends Controller {
+use Illuminate\Http\Request;
+
+use App\Http\Controllers\Controller;
+use App\Models\Tag as MainModel;
+use App\Http\Request\TagRequest as MainRequest;
+
+class TagController extends Controller 
+{
     private $pathViewController = 'admin.pages.tag.';
     private $model;
     private $params = [];
     private $controllerName = 'tag';
     private $pageInfo = [];
    
-    public function __construct() {
+    public function __construct() 
+    {
         $this->pageInfo['page-title'] = 'Tag Management';
         $this->model = new MainModel();
         $this->params['pagination']['totalItemsPerPage'] = 6;
         view()->share('controllerName', $this->controllerName);
     }
 
-    public function index(Request $request) {
-       
+    public function index(Request $request) 
+    {
         $this->pageInfo['page-name'] = 'list';
         $this->pageInfo['add'] = 'yes';
-
-        $this->params['taxonomy'] = $this->controllerName;
         
         $this->params['filter']['status'] = ($request->filter_status == null)? 'all': $request->filter_status;
         $this->params['search']['field'] = $request->search_field;
@@ -34,6 +36,7 @@ class TagController extends Controller {
         $this->params['pagination']['page'] = $request->page;
 
         $items = $this->model->listItems($this->params,['task' => 'admin-list-items']);
+
         $statusFilters = $this->model->countItems($this->params,['task' => 'admin-count-items-by-status']);
 
         return view($this->pathViewController. 'index', [
@@ -44,7 +47,8 @@ class TagController extends Controller {
         ]);
     }
 
-    public function status(Request $request) {
+    public function status(Request $request) 
+    {
         $params['id'] = $request->id;
         $params['status'] = $request->status;
 
@@ -53,7 +57,8 @@ class TagController extends Controller {
         return redirect()->back()->with('hgcms_notify','Change Status Successful');
     }
 
-    public function form(Request $request) {
+    public function form(Request $request) 
+    {
         $item = null;
         $params = [];
         $task = 'add';
@@ -74,10 +79,11 @@ class TagController extends Controller {
         ]);
     }
 
-    public function statuses(Request $request) {
+    public function statuses(Request $request) 
+    {
         $params = [];
 
-        $params['ids'] = $request->cball;
+        $params['ids'] = $request->id;
         $params['status'] =  $request->status;
 
         $res = $this->model->saveItems($params,['task' =>'change-status-multi']);
@@ -85,7 +91,8 @@ class TagController extends Controller {
         return redirect()->back()->with('hgcms_notify',"$res items change Status Successful");   
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request) 
+    {
         $id = $request->id;
         $params = [];
         $params['id'] = $id;
@@ -95,20 +102,23 @@ class TagController extends Controller {
 
         return redirect()->back()->with('hgcms_notify','Item is Deleted');
     }
-    public function deletes(Request $request) {
+    
+    public function deletes(Request $request)
+    {
        $params = [];
-       $params['id'] = $request->cball;
+       $params['id'] = $request->id;
        $params['taxonomy'] = 'tag';
 
        $this->model->deleteItems($params,['task'=>'delete-item']);
 
        return redirect()->back()->with('hgcms_notify','Item is Deleted');
     }
-    public function save(MainRequest $request) {
 
-        if($request->method() == 'POST') {
+    public function save(MainRequest $request) 
+    {
+        if($request->method() == 'POST') 
+        {
             $params = $request->all();
-            $params['taxonomy'] = 'tag';
             
             $task = 'add-item';
             $notify = 'Add Item Successfully';
@@ -125,7 +135,8 @@ class TagController extends Controller {
         }
     }
 
-    public function ishome(Request $request) {
+    public function ishome(Request $request) 
+    {
         $params['id'] = $request->id;
         $params['ishome'] = $request->ishome;
 
@@ -134,7 +145,8 @@ class TagController extends Controller {
         return redirect()->back()->with('hgcms_notify','Change Is Home Successful');
     }
 
-    public function ishomese(Request $request) {
+    public function ishomese(Request $request) 
+    {
         $params = [];
         $params['ids'] = $request->cball;
         $params['ishome'] =  $request->ishome;
@@ -144,13 +156,15 @@ class TagController extends Controller {
         return redirect()->back()->with('hgcms_notify',"$res items change IsHome Successful");
     }
 
-    public function display(Request $request) {
+    public function display(Request $request) 
+    {
         $res = $this->model->saveItems($request->all(),['task' =>'change-display']);
 
         return redirect()->back()->with('hgcms_notify',"$res Items Change Display Successful");
     }
 
-    public function ordering(Request $request) {
+    public function ordering(Request $request) 
+    {
         $res = $this->model->saveItems($request->all(),['task' =>'change-ordering']);
 
         return redirect()->back()->with('hgcms_notify',"$res Items Change Ordering Successful");

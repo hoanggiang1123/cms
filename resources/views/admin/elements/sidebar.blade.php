@@ -71,10 +71,11 @@ $name = Route::currentRouteName();
 										 <li class="nav-item {{  $name == 'post'? 'active': '' }}">
 											<a href="{{ route('post') }}" class="nav-link">
 												<span class="nav-text">
-												<span>Posts</span>
+												<span>All Posts</span>
 												</span>
 											</a>
 										 </li>
+										 @if(check_user_permision(request(),'CategoryController@index'))
 										 <li class="nav-item {{  $name == 'category'? 'active': '' }}">
 											<a href="{{ route('category') }}" class="nav-link">
 												<span class="nav-text">
@@ -82,6 +83,8 @@ $name = Route::currentRouteName();
 												</span>
 											</a>
 										 </li>
+										 @endif
+										 @if(check_user_permision(request(),'TagController@index'))
 										 <li class="nav-item {{  $name == 'tag'? 'active': '' }}">
 											<a href="{{ route('tag') }}" class="nav-link">
 												<span class="nav-text">
@@ -89,10 +92,12 @@ $name = Route::currentRouteName();
 												</span>
 											</a>
 										 </li>
+										 @endif
 									</ul>
 							 </div>
 							 <b class="sub-arrow"></b>
 						</li>
+						@if(check_user_permision(request(),'User@index'))
 						<li class="nav-item {{ ($controllerName == 'user')? 'active':'' }}">
 							<a href="javascript:;" class="nav-link dropdown-toggle">
 								<i class="nav-icon fa fa-users"></i>
@@ -124,14 +129,20 @@ $name = Route::currentRouteName();
 								</ul>
 							</div>	
 						</li>
+						@endif
 				 </ul>
 			</div>
 			<!-- /.sidebar scroll -->
+			@php
+				$currentUser = request()->session()->get('userInfo');
+				$avatar = $currentUser['thumb'] != null? asset('images/'.$currentUser['thumb']) : asset('admin/assets/image/avatar/avatar4.jpg');
+			@endphp
+			@if($currentUser)
 			<div class="sidebar-section">
 				 <div class="sidebar-section-item fadeable-bottom">
 						<div class="fadeinable">
 							 <div class="pos-rel">
-									<img src="{{ asset('admin/assets/image/avatar/avatar4.jpg') }}" width="42" class="radius-round float-left mx-2 border-2 px-1px brc-secondary-m2" />
+									<img src="{{ $avatar }}" width="42" height="42"  class="radius-round float-left mx-2 border-2 px-1px brc-secondary-m2" />
 									<span class="bgc-success-tp2 radius-round border-2 brc-white p-1 position-tr mr-1"></span>
 							 </div>
 						</div>
@@ -139,25 +150,26 @@ $name = Route::currentRouteName();
 							 <div id="sidebar-footer-bg" class="bgc-white d-flex align-items-center shadow-sm mx-2 mt-2px py-2 radius-t-1 border-1 border-t-2 border-b-0 brc-primary-m3">
 									<div class="d-flex mr-auto py-1">
 										 <div class="pos-rel">
-												<img src="{{ asset('admin/assets/image/avatar/avatar4.jpg') }}" width="42" class="radius-round float-left mx-2 border-2 px-1px brc-default-m2" />
+												<img src="{{ $avatar }}" width="42" height="42"  class="radius-round float-left mx-2 border-2 px-1px brc-default-m2" />
 												<span class="bgc-success-tp2 radius-round border-2 brc-white p-1 position-tr mr-1 mt-1"></span>
 										 </div>
 										 <div>
-												<span class="text-blue font-bolder">Alexa</span>
+												<span class="text-blue font-bolder">{{$currentUser->name }}</span>
 												<div class="text-80 text-grey">
-													 Admin
+													 {{ $currentUser->username }}
 												</div>
 										 </div>
 									</div>
-									<a href="#" class="btn btn-outline-blue border-0 p-2 mr-2px ml-4" title="Settings" data-toggle="modal" data-target="#id-ace-settings-modal">
+									<a href="javascript:;" class="btn btn-outline-blue border-0 p-2 mr-2px ml-4" title="Settings" data-toggle="modal" data-target="#id-ace-settings-modal">
 									<i class="fa fa-cog text-150"></i>
 									</a>
-									<a href="page-login" class="btn btn-outline-warning border-0 p-2 mr-1" title="Logout">
+									<a href="{{ route('auth/logout') }}" class="btn btn-outline-warning border-0 p-2 mr-1" title="Logout">
 									<i class="fa fa-sign-out-alt text-150"></i>
 									</a>
 							 </div>
 						</div>
 				 </div>
 			</div>
+			@endif
 	 </div>
 </div>

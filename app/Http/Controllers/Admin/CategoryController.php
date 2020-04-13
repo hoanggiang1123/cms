@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Term as MainModel;
-use App\Http\Request\TermRequest as MainRequest;
+use App\Models\Category as MainModel;
+use App\Http\Request\CategoryRequest as MainRequest;
 
 class CategoryController extends Controller {
     private $pathViewController = 'admin.pages.category.';
@@ -23,8 +23,6 @@ class CategoryController extends Controller {
         
         $this->pageInfo['page-name'] = 'list';
         $this->pageInfo['add'] = 'yes';
-
-        $this->params['taxonomy'] = $this->controllerName;
         
         $this->params['filter']['status'] = ($request->filter_status == null)? 'all': $request->filter_status;
         $this->params['search']['field'] = $request->search_field;
@@ -34,6 +32,7 @@ class CategoryController extends Controller {
         $this->params['pagination']['page'] = $request->page;
 
         $items = $this->model->listItems($this->params,['task' => 'admin-list-items']);
+
         $statusFilters = $this->model->countItems($this->params,['task' => 'admin-count-items-by-status']);
 
         return view($this->pathViewController. 'index', [
@@ -77,7 +76,7 @@ class CategoryController extends Controller {
     public function statuses(Request $request) {
         $params = [];
 
-        $params['ids'] = $request->cball;
+        $params['ids'] = $request->id;
         $params['status'] =  $request->status;
 
         $res = $this->model->saveItems($params,['task' =>'change-status-multi']);
@@ -97,7 +96,7 @@ class CategoryController extends Controller {
     }
     public function deletes(Request $request) {
        $params = [];
-       $params['id'] = $request->cball;
+       $params['id'] = $request->id;
        $params['taxonomy'] = 'category';
 
        $this->model->deleteItems($params,['task'=>'delete-item']);
@@ -108,7 +107,6 @@ class CategoryController extends Controller {
 
         if($request->method() == 'POST') {
             $params = $request->all();
-            $params['taxonomy'] = 'category';
             
             $task = 'add-item';
             $notify = 'Add Item Successfully';
@@ -136,7 +134,7 @@ class CategoryController extends Controller {
 
     public function ishomese(Request $request) {
         $params = [];
-        $params['ids'] = $request->cball;
+        $params['ids'] = $request->id;
         $params['ishome'] =  $request->ishome;
 
         $res = $this->model->saveItems($params,['task' =>'change-ishome-multi']);

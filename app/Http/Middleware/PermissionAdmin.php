@@ -9,8 +9,9 @@ class PermissionAdmin {
         if($request->session()->has('userInfo')) {
             $userInfo = $request->session()->get('userInfo');
 
-            if($userInfo['level'] == 'Admin') return $next($request);
-            return redirect()->route('dashboard');
+            //if($userInfo['level'] == 'Admin') 
+            return $next($request);
+            //return redirect()->route('dashboard');
            
         }
         return redirect()->route('dashboard');

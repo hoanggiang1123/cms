@@ -3,10 +3,8 @@
     use App\Helper\Template;
     $statusFilter = Template::showStatusFilters($controllerName,$params,$statusFilters);
     $searchFilter = Template::showSearchFilters($controllerName,$params);
-    //$categoryFilter = Template::showTerms($controllerName,$params,$terms['category'],'filter_category');
-    //$tagFilter = Template::showTerms($controllerName, $params,$terms['tag'],'filter_tag');
-    $categoryFilter = Template::showTermsFilter($terms['category'],$params,'filter_category');
-    $tagFilter = Template::showTermsFilter($terms['tag'],$params,'filter_tag');
+    $categoryFilter = Template::showTermsFilter($categories,$params,'filter_category');
+    $tagFilter = Template::showTermsFilter($tags,$params,'filter_tag');
     $bulkAction = Template::showBulkAction($controllerName);
 @endphp
 @section('content')
@@ -41,28 +39,29 @@
                         </thead>
                                                 
                         <tbody>
+
                             @forelse($items as $key => $value)
-                            @php
-                                $thumb = Template::showImage($controllerName, $value['thumb'], $value['title']);
-                                $categoryArr = $value['category'] == ''? []:json_decode($value['category'],true);
-                                $tagArr =  $value['tag'] == ''? []:json_decode($value['tag'],true);
-                                $categories = Template::showTaxonomies('category',$categoryArr);
-                                $tags = Template::showTaxonomies('tag',$tagArr);
-                                $status = Template::showStatus($controllerName,$value['status'],$value['id']);
-                                $created = Template::showHistory($value['created'],$value['created_by']);
-                                $modified = Template::showHistory($value['modified'],$value['modified_by']);
-                                $action = Template::showAction($controllerName,$value['id']);
-                            @endphp
+
+                                @php
+                                    $thumb = Template::showImage($controllerName, $value['thumb'], $value['name']);
+                                    $tags = Template::showTaxonomies('tag',$value['tags']);
+                                    $categories = Template::showCategory('category',$value['category']);
+                                    $status = Template::showStatus($controllerName,$value['status'],$value['id']);
+                                    $created = Template::showHistory($value['created'],$value['created_by']);
+                                    $modified = Template::showHistory($value['modified'],$value['modified_by']);
+                                    $action = Template::showAction($controllerName,$value['id']);
+                                @endphp
+
                             <tr class="bgc-h-default-l3 d-style">
                                 <td class="text-center pr-0 pos-rel">
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-info-m1 v-hover"></div>
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-success-m1 v-active"></div>
                                     <label>
-                                        <input type="checkbox" name="cball[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
+                                        <input type="checkbox" name="id[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
                                     </label>
                                 </td>
                                 <td class="text-center pr-0">{{ $value['id'] }}</td>
-                                <td width="25%"><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['title'] }} </a></td>
+                                <td width="25%"><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['name'] }} </a></td>
                                 <td>{!! $thumb !!}</td>
                                 <td class="d-none d-sm-table-cell">{!! $categories !!}</td>
                                 <td class="d-none d-sm-table-cell">{!! $tags !!}</td>

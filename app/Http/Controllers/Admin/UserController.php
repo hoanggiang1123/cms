@@ -20,7 +20,8 @@ class UserController extends Controller {
         view()->share('controllerName', $this->controllerName);
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $this->pageInfo['page-name'] = 'list';
         $this->pageInfo['add'] = 'yes';
 
@@ -32,7 +33,6 @@ class UserController extends Controller {
         $this->params['pagination']['page'] = $request->page;
 
         $items = $this->model->listItems($this->params,['task' => 'admin-list-items']);
-
 
         $statusFilters = $this->model->countItems($this->params,['task' => 'admin-count-items-by-status']);
 
@@ -88,7 +88,7 @@ class UserController extends Controller {
 
     public function statuses(Request $request) {
         $params = [];
-        $params['ids'] = $request->cball;
+        $params['ids'] = $request->id;
         $params['status'] =  $request->status;
 
         $res = $this->model->saveItems($params,['task' =>'change-status-multi']);
@@ -107,7 +107,7 @@ class UserController extends Controller {
 
     public function deletes(Request $request) {
        $params = [];
-       $params['id'] = $request->cball;
+       $params['id'] = $request->id;
 
        $this->model->deleteItems($params,['task'=>'delete-item']);
 

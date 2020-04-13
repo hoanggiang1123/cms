@@ -13,8 +13,8 @@ use App\Helper\Template;
                 <div class="col-8">
                     <div class="form-group row">
                         <div class="col-sm-12 input-floating-label text-blue-d1 brc-blue-m1">
-                            <input type="text" value="{{ $item['title']? $item['title'] : old('title') }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="title">
-                            <span class="floating-label text-grey-m3">Title</span>
+                            <input type="text" value="{{ $item['name']? $item['name'] : old('name') }}" class="form-control form-control-md col-sm-12 col-md-12 shadow-none" autocomplete="off" id="post-title" name="name">
+                            <span class="floating-label text-grey-m3">Name</span>
                         </div>
                     </div>
                     <div class="form-group row">

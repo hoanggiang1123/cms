@@ -31,7 +31,7 @@
                         <tbody>
                             @forelse($items as $key => $value)
                             @php
-                                $thumb = Template::showImage($controllerName, $value['thumb'], $value['title']);
+                                $thumb = Template::showImage($controllerName, $value['thumb'], $value['name']);
                                 $status = Template::showStatus($controllerName,$value['status'],$value['id']);
                                 $action = Template::showAction($controllerName,$value['id']);
                             @endphp
@@ -40,11 +40,11 @@
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-info-m1 v-hover"></div>
                                     <div class="position-tl h-100 ml-n1px border-l-4 brc-success-m1 v-active"></div>
                                     <label>
-                                        <input type="checkbox" name="cball[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
+                                        <input type="checkbox" name="id[]" value="{{ $value['id'] }}" class="align-middle cbsingle" autocomplete="off">
                                     </label>
                                 </td>
                                 <td class="text-center pr-0">{{ $value['id'] }}</td>
-                                <td><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['title'] }} </a></td>
+                                <td><a href="{{ route($controllerName.'/form',['id'=> $value['id']]) }}" class="text-blue-d2"> {{ $value['name'] }} </a></td>
                                 <td>{{ $value['username'] }}</td>
                                 <td>{{ $value['email'] }}</td>
                                 <td>{!! $thumb !!}</td>

@@ -13,9 +13,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('hgcms_users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('content');
+            $table->integer('phone');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
